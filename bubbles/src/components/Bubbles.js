@@ -1,8 +1,8 @@
-import React from 'react'
-import Bubble from './Bubble'
+import React from "react";
+import Bubble from "./Bubble";
 
 const Bubbles = () => (
-    <React.Fragment>
+  <React.Fragment>
     <Bubble pos='0%' size='188px' wiggle='6px' wiggleDur='1s' duration='19s'/>
     <Bubble pos='5%' size='35px' wiggle='100px' wiggleDur='3s' duration='12s'/>
     <Bubble pos='25%' size='133px' wiggle='100px' wiggleDur='3s' duration='15s'/>
@@ -29,8 +29,11 @@ const Bubbles = () => (
     <Bubble pos='43%' size='9px' wiggle='13px' wiggleDur='2290ms' duration='6200ms'/>
     <Bubble pos='55%' size='4px' wiggle='22px' wiggleDur='1190ms' duration='9820ms'/>
     <Bubble pos='68%' size='1px' wiggle='22px' wiggleDur='1290ms' duration='8790ms'/>
+    <Bubble pos="42%" wiggle="100px" wiggleDur="3s" duration="21s" heading='howdy yall' children='Putting things in things is good things
+      You seein this?'>
+      
+    </Bubble>
+  </React.Fragment>
+);
 
-    </React.Fragment>
-)
-
-export default Bubbles
+export default Bubbles;
