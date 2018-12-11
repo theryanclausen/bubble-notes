@@ -5,10 +5,10 @@ import styled from "styled-components";
 const Abubble = styled.div`
   @keyframes animateBubble {
     0% {
-      bottom:-200px;
+      bottom: -150px;
     }
     100% {
-      bottom: 1500px;
+      bottom: 1200px;
     }
   }
   @keyframes sideWays {
