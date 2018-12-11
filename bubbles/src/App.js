@@ -1,23 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import Axios from 'axios';
+import React from "react";
+import { Route } from "react-router-dom";
+import NotesView from "./components/NotesView";
+import styled from 'styled-components'
+import Bubble from "./components/Bubble";
 
-const App = ()=> {
-  const [notes, setNotes] = useState([])
+const Background = styled.div `
+  width: 100vw;
+  height: 100vh;
+  background: #3cc2e8;
+`
 
-  const fetchNotes = async() =>{
-    const fetchedNotes = await Axios.get('https://backend-project-week-lambda.herokuapp.com/api/notes')
-    setNotes(fetchedNotes.data)
-  }
-
-  useEffect(()=>{fetchNotes()})
-  
-    return (
-      <div>
-        {notes.map(note => <h1 key={note.id}>{note.title}</h1>)}
-
-      </div>
-    );
-  }
-
+const App = () => (
+  <Background>
+    <Route exact path="/" component={NotesView} />
+    <Bubble pos='25%' size='135px' wiggle='100px' wiggleDur='3s' duration='15s'></Bubble>
+  </Background>
+);
 
 export default App;
