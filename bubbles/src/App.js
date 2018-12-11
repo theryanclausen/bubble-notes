@@ -1,28 +1,23 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react';
+import Axios from 'axios';
 
-class App extends Component {
-  render() {
+const App = ()=> {
+  const [notes, setNotes] = useState([])
+
+  const fetchNotes = async() =>{
+    const fetchedNotes = await Axios.get('https://backend-project-week-lambda.herokuapp.com/api/notes')
+    setNotes(fetchedNotes.data)
+  }
+
+  useEffect(()=>{fetchNotes()})
+  
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div>
+        {notes.map(note => <h1 key={note.id}>{note.title}</h1>)}
+
       </div>
     );
   }
-}
+
 
 export default App;
