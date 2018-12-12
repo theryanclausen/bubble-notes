@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import Bubble from './Bubble'
-import {randomRange} from '../functions/functions'
+import {randomRange} from '../config/functions'
 
 const BubbleNote = props =>{
     const [bubbleStats, setBubble] = useState({})
@@ -12,7 +12,7 @@ const BubbleNote = props =>{
             wiggle: randomRange(2,180,true) + 'px',
             wiggleDur: randomRange(1500, 8000, true) + 'ms',
             duration: randomRange(8666, 64232, true) + 'ms',
-            delayDist: -1* randomRange(333, 750, true) + 'px'
+            delayDist: -1* randomRange(233, 950, true) + 'px'
         })
     },{})
     return (
