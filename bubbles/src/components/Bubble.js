@@ -18,6 +18,7 @@ const Abubble = styled.div`
       margin-left: ${props => props.wiggle || "100px"};
     }
   }
+  z-index: ${props => (props.z ? props.z : "0")}
   animation-delay: ${props => (props.delay ? props.delay : "1ms")};
   border-radius: 50%;
   box-shadow: 0 20px 30px #02060780, inset 0px 10px 30px 5px #f3fbfefc;
@@ -49,8 +50,6 @@ const Abubble = styled.div`
 `;
 
 const Bubble = props => {
-
-
   return (
     <Abubble
       pos={props.pos}
@@ -59,8 +58,9 @@ const Bubble = props => {
       wiggleDur={props.wiggleDur}
       duration={props.duration}
       delayDist={props.delayDist}
+      z={props.z}
     >
-      <div>
+      <div id={props.id} onClick={e => props.deleteNote(e.target.id)}>
         <h2>{props.title}</h2>
         <p>{props.textBody}</p>
       </div>

@@ -19,6 +19,15 @@ const Bar = styled.div`
     display: flex;
     justify-content: space-around;
     align-items: center;
+    div{
+        z-index:500;
+        &:hover{
+            cursor:pointer;
+        }
+    }
+    .delete{
+        color: ${props =>props.deleteStatus ? 'red':'white'}
+    }
   }
   form {
     width: 85vw;
@@ -41,18 +50,44 @@ const Bar = styled.div`
   }
 `;
 
-const ToolBar = props => {
+const ToolBar = ({ addNote, deleteStatus, toggleDelete }) => {
+  const [title, setTitle] = useState("");
+  const [textBody, setText] = useState("");
+
+  const submitHandler = (e, aTitle, text) => {
+    e.preventDefault();
+    addNote(aTitle, text);
+    setTitle("");
+    setText("");
+  };
   return (
-    <Bar>
-      <form>
-        <input placeholder="title" />
-        <input className="textBody" placeholder="message" />
+    <Bar deleteStatus={deleteStatus}>
+      <form onSubmit={e => submitHandler(e, title, textBody)}>
+        <input
+          type="text"
+          value={title}
+          onChange={e => setTitle(e.target.value)}
+          placeholder="title"
+        />
+        <input
+          type="text"
+          className="textBody"
+          value={textBody}
+          onChange={e => setText(e.target.value)}
+          placeholder="message"
+        />
         <button />
       </form>
       <div>
-        <Edit />
-        <Message />
-        <Pop />
+        <div>
+          <Edit />
+        </div>
+        <div>
+          <Message />
+        </div>
+        <div className='delete' onClick={toggleDelete}>
+          <Pop />
+        </div>
       </div>
     </Bar>
   );
