@@ -4,7 +4,7 @@ import styled from "styled-components";
 const Abubble = styled.div`
   @keyframes animateBubble {
     0% {
-      bottom: ${props => props.heading ? '-333px':'-150px'};
+      bottom: ${props => props.delayDist || '350px'};
     }
     100% {
       bottom: 1200px;
@@ -15,7 +15,7 @@ const Abubble = styled.div`
       margin-left: -20px;
     }
     100% {
-      margin-left: ${props => props.wiggle};
+      margin-left: ${props => props.wiggle || '100px'};
     }
   }
   animation-delay: ${props => props.delay ? props.delay: '1ms'};
@@ -25,17 +25,17 @@ const Abubble = styled.div`
   height: ${props => (props.size ? props.size : "auto")};
   width: ${props => (props.size ? props.size : "auto")};
   position: absolute;
-  animation: animateBubble ${props => props.duration} linear infinite,
-    sideWays ${props => props.wiggleDur} ease-in-out infinite alternate;
-  left: ${props => props.pos};
+  animation: animateBubble ${props => props.duration || '22s'} linear infinite,
+    sideWays ${props => props.wiggleDur || '4s'} ease-in-out infinite alternate;
+  left: ${props => props.pos || '50%'};
   div {
       display:flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       height:333px;
-    width: 333px;
-    padding: 50px;
+      width: 333px;
+      padding: 50px;
     h2{
         text-align: center;
         margin-bottom: 25px;
@@ -55,11 +55,11 @@ const Bubble = props => (
     wiggle={props.wiggle}
     wiggleDur={props.wiggleDur}
     duration={props.duration}
-    heading={props.heading}
+    delayDist={props.delayDist}
   >
     <div>
-        <h2>{props.heading}</h2>
-      <p>{props.text}</p>
+        <h2>{props.title}</h2>
+      <p>{props.textBody}</p>
     </div>
   </Abubble>
 );

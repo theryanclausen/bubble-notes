@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Axios from 'axios';
-import Bubble from './Bubble'
+import BubbleNote from './BubbleNote'
 
 const NotesView = ()=> {
   const [notes, setNotes] = useState([])
@@ -13,12 +13,11 @@ const NotesView = ()=> {
   useEffect(()=>{fetchNotes()})
   
     return (
-      <div>
-        {notes.map(note => <Bubble pos={note.textBody.length + note.id + note.title.length + '%'} wiggle="100px" wiggleDur={note.id +'s'} duration={2 *note.id +14 +'s'} heading={note.title} text={note.textBody}>
+      <React.Fragment>
+        {notes.map(note => <BubbleNote key={note.id} note={note} />)}
       
-    </Bubble>)}
 
-      </div>
+      </React.Fragment>
     );
   }
 

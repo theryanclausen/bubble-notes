@@ -1,10 +1,16 @@
 import React from "react";
 import Bubble from "./Bubble";
-import {randomRange} from '../functions/functions'
+import { randomRange } from "../functions/functions";
 
 const Bubbles = () => (
   <React.Fragment>
-    <Bubble pos={randomRange(0,99)+'%'} size={randomRange(50,200, true) + 'px'} wiggle={randomRange(2, 100, true) +'px'} wiggleDur={randomRange(1500,8000,true)+'ms'} duration={randomRange(3500, 33333, true) + 'ms'}/>
+    <Bubble
+      pos={randomRange(0, 99) + "%"}
+      size={randomRange(50, 200, true) + "px"}
+      wiggle={randomRange(2, 100, true) + "px"}
+      wiggleDur={randomRange(1500, 8000, true) + "ms"}
+      duration={randomRange(3500, 33333, true) + "ms"}
+    />
     {/* <Bubble pos='5%' size='35px' wiggle='100px' wiggleDur='3s' duration='12s'/>
     <Bubble pos='25%' size='133px' wiggle='100px' wiggleDur='3s' duration='15s'/>
     <Bubble pos='55%' size='122px' wiggle='100px' wiggleDur='3s' duration='12s'/>
@@ -30,7 +36,6 @@ const Bubbles = () => (
     <Bubble pos='43%' size='9px' wiggle='13px' wiggleDur='2290ms' duration='6200ms'/>
     <Bubble pos='55%' size='4px' wiggle='22px' wiggleDur='1190ms' duration='9820ms'/>
     <Bubble pos='68%' size='1px' wiggle='22px' wiggleDur='1290ms' duration='8790ms'/> */}
-    
   </React.Fragment>
 );
 
