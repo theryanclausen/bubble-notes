@@ -18,6 +18,7 @@ const Abubble = styled.div`
       margin-left: ${props => props.wiggle};
     }
   }
+  animation-delay: ${props => props.delay ? props.delay: '1ms'};
   border-radius: 50%;
   box-shadow: 0 20px 30px #02060780, inset 0px 10px 30px 5px #f3fbfefc;
 
@@ -36,6 +37,7 @@ const Abubble = styled.div`
     width: 333px;
     padding: 50px;
     h2{
+        text-align: center;
         margin-bottom: 25px;
         font-size:26px;
     }
