@@ -37,6 +37,7 @@ const Abubble = styled.div`
     height: 333px;
     width: 333px;
     padding: 50px;
+    border-radius:50%;
     h2 {
       text-align: center;
       margin-bottom: 25px;
@@ -60,9 +61,18 @@ const Bubble = props => {
       delayDist={props.delayDist}
       z={props.z}
     >
-      <div id={props.id} onClick={e => props.deleteNote(e.target.id)}>
-        <h2>{props.title}</h2>
-        <p>{props.textBody}</p>
+      <div
+        id={props.id}
+        onClick={e => props.title ? props.deleteNote(e.target.id,props.title): ''}
+        onMouseEnter={e =>
+          props.deleteStatus && props.title ?
+            e.target.style.backgroundColor = '#ff000080'
+            : ''  
+        }
+        onMouseLeave={e => e.target.style.backgroundColor = 'unset'}
+      >
+        <h2 >{props.title}</h2>
+        <p >{props.textBody}</p>
       </div>
     </Abubble>
   );

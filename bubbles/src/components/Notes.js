@@ -11,9 +11,18 @@ const Container = styled.div`
 const Notes = () => {
   const [notes, setNotes] = useState([]);
   const [deleteStatus, setDelete] = useState(false)
+  const [editStatus, setEdit] = useState(false)
   const URL = "https://backend-project-week-lambda.herokuapp.com/api/notes/"
   
-  const toggleDelete = () =>setDelete(!deleteStatus)
+  const toggleDelete = () =>{
+    setDelete(!deleteStatus)
+    setEdit(false)
+  }
+
+  const toggleEdit = () =>{
+    setEdit(!editStatus)
+    setDelete(false)
+  }
   
   const fetchNotes = async () => {
     const fetchedNotes = await Axios.get(URL
@@ -26,8 +35,8 @@ const Notes = () => {
     await Axios.post(URL, {title,textBody})
   }
 
-  const deleteNote = (id) =>{
-    if(deleteStatus){
+  const deleteNote = (id,title) =>{
+    if(deleteStatus && title){
       Axios.delete(`${URL}${id}`)
     }
   }
@@ -42,7 +51,7 @@ const Notes = () => {
         <BubbleNote key={note.id} note={note} deleteNote={deleteNote} deleteStatus={deleteStatus} />
       ))}
 
-      <ToolBar addNote={addNote} toggleDelete={toggleDelete} deleteStatus={deleteStatus}/>
+      <ToolBar addNote={addNote} toggleDelete={toggleDelete} deleteStatus={deleteStatus} toggleEdit={toggleEdit} editStatus={editStatus}/>
     </Container>
   );
 };
