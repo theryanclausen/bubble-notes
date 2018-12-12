@@ -57,7 +57,7 @@ const Bubble = props => (
   >
     <div>
         <h2>{props.heading}</h2>
-      <p>{props.children}</p>
+      <p>{props.text}</p>
     </div>
   </Abubble>
 );

@@ -29,10 +29,7 @@ const Bubbles = () => (
     <Bubble pos='43%' size='9px' wiggle='13px' wiggleDur='2290ms' duration='6200ms'/>
     <Bubble pos='55%' size='4px' wiggle='22px' wiggleDur='1190ms' duration='9820ms'/>
     <Bubble pos='68%' size='1px' wiggle='22px' wiggleDur='1290ms' duration='8790ms'/>
-    <Bubble pos="42%" wiggle="100px" wiggleDur="3s" duration="21s" heading='howdy yall' children='Putting things in things is good things
-      You seein this?'>
-      
-    </Bubble>
+    
   </React.Fragment>
 );
 

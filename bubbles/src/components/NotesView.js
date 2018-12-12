@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Axios from 'axios';
-
+import Bubble from './Bubble'
 const NotesView = ()=> {
   const [notes, setNotes] = useState([])
 
@@ -13,7 +13,9 @@ const NotesView = ()=> {
   
     return (
       <div>
-        {notes.map(note => <h1 key={note.id}>{note.title}</h1>)}
+        {notes.map(note => <Bubble pos={note.textBody.length + 'px'} wiggle="100px" wiggleDur={note.id +'s'} duration={2 *note.id +14 +'s'} heading={note.title} text={note.textBody}>
+      
+    </Bubble>)}
 
       </div>
     );
