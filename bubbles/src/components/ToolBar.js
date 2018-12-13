@@ -99,7 +99,7 @@ const ToolBar = ({
   return (
     <Bar
       deleteStatus={deleteStatus}
-      editStatus={editStatus}
+      editStatus={editStatus&&idPendingEdit}
       messageStatus={messageStatus}
     >
       <form onSubmit={e => submitHandler(e, title, textBody,idPendingEdit)}>
