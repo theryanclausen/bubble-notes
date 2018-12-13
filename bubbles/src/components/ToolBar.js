@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Edit, Message, Pop } from "../config/Assets";
 
@@ -39,7 +39,7 @@ const Bar = styled.div`
     z-index: 200;
     width: 85vw;
     display: ${props =>
-      (props.editStatus&& props.idPendingEdit) || props.messageStatus ? "flex" : "none"};
+      (props.editStatus&& props.bubbleSelected) || props.messageStatus ? "flex" : "none"};
     input {
       width: 20%;
       box-shadow: 0 0 10px 4px #f3fbfefc;
@@ -84,18 +84,6 @@ const ToolBar = ({
     setTitle("");
     setText("");
   };
-
-  const fetchCheck = async(id = null)=>{
-      if(id){
-       return await fetchNote(id)
-      }
-  }
-
-  useEffect(()=>{
-    let note = fetchCheck(idPendingEdit)
-    setTitle(note.title)
-    setText(note.textBody)
-  }, {})
   return (
     <Bar
       deleteStatus={deleteStatus}

@@ -9,18 +9,13 @@ const BubbleNote = ({
   editStatus,
   stageEdit,
   idPendingEdit,
-  fetchNote
+  updatedNote,
+  setUpdate
 }) => {
   const [bubbleStats, setBubble] = useState({});
-  const [bubbleNote, setNote] = useState({});
-
-  const currentNoteFetch = async()=>{
-      let currentNote =await fetchNote(note.id);
-      setNote(currentNote);
-  }
+  const [currentNote, setCurrent] = useState({});
 
   useEffect(() => {
-      
     setBubble({
       pos: randomRange(10, 70) + "%",
       wiggle: randomRange(2, 180, true) + "px",
@@ -30,14 +25,21 @@ const BubbleNote = ({
       z: 100
     });
   }, {});
-  useEffect(()=>{
-      currentNoteFetch()
-  })
+
+  useEffect(() => {
+    if (!currentNote.id) {
+      setCurrent(note);
+    }
+    if (updatedNote && updatedNote.id === note.id) {
+      setCurrent(updatedNote);
+      setUpdate(null);
+    }
+  });
 
   return (
     <Bubble
+      {...currentNote}
       {...bubbleStats}
-      {...bubbleNote}
       deleteStatus={deleteStatus}
       deleteNote={deleteNote}
       editStatus={editStatus}
