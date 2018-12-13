@@ -3,6 +3,7 @@ import Axios from "axios";
 import styled from "styled-components";
 import BubbleNote from "./BubbleNote";
 import ToolBar from "./ToolBar";
+import {URL} from "../config/functions"
 const Container = styled.div`
   width: 100%;
   height: 100%;
@@ -14,7 +15,8 @@ const Notes = () => {
   const [editStatus, setEdit] = useState(false);
   const [idPendingEdit, setEditID] = useState(null);
   const [messageStatus, setMessage] = useState(false);
-  const URL = "https://backend-project-week-lambda.herokuapp.com/api/notes/";
+
+  
 
   const toggleDelete = () => {
     setDelete(!deleteStatus);
@@ -44,14 +46,25 @@ const Notes = () => {
     setNotes(fetchedNotes.data);
   };
 
-  const addNote = async (title, textBody) => {
-    await Axios.post(URL, { title, textBody });
+  const fetchNote = async id =>{
+    const currentNote = await Axios.get(URL+id)
+    return currentNote.data
+}
+
+  const addNote = (title, textBody) => {
+    Axios.post(URL, { title, textBody });
     setMessage(false);
   };
 
+  const editNote = async (title,textBody,id) =>{
+    await Axios.put(URL+id,{title,textBody})
+    setEdit(false)
+    setEditID(null);
+  }
+
   const deleteNote = id => {
     if (deleteStatus) {
-      Axios.delete(`${URL}${id}`);
+      Axios.delete(URL+id);
     }
   };
 
@@ -70,6 +83,7 @@ const Notes = () => {
           editStatus={editStatus}
           stageEdit={stageEdit}
           idPendingEdit={idPendingEdit}
+          fetchNote= {fetchNote}
         />
       ))}
 
@@ -81,7 +95,9 @@ const Notes = () => {
         editStatus={editStatus}
         toggleMessage={toggleMessage}
         messageStatus={messageStatus}
-        
+        idPendingEdit={idPendingEdit}
+        editNote={editNote}
+        fetchNote={fetchNote}
       />
     </Container>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import styled from "styled-components";
 import { Edit, Message, Pop } from "../config/Assets";
 
@@ -19,26 +19,27 @@ const Bar = styled.div`
     display: flex;
     justify-content: space-around;
     align-items: center;
-    div{
-        z-index:500;
-        &:hover{
-            cursor:pointer;
-        }
+    div {
+      z-index: 500;
+      &:hover {
+        cursor: pointer;
+      }
     }
-    .delete{
-        color: ${props =>props.deleteStatus ? 'red':'white'}
+    .delete {
+      color: ${props => (props.deleteStatus ? "red" : "white")};
     }
-    .edit{
-        color: ${props =>props.editStatus ? 'lightGreen': 'white'}
+    .edit {
+      color: ${props => (props.editStatus ? "lightGreen" : "white")};
     }
-    .message{
-        color: ${props =>props.messageStatus ? 'yellow':'white'};
+    .message {
+      color: ${props => (props.messageStatus ? "yellow" : "white")};
     }
   }
   form {
-      z-index: 200;
+    z-index: 200;
     width: 85vw;
-    display: ${props => props.editStatus||props.messageStatus ?"flex": 'none'};
+    display: ${props =>
+      props.editStatus || props.messageStatus ? "flex" : "none"};
     input {
       width: 20%;
       box-shadow: 0 0 10px 4px #f3fbfefc;
@@ -57,19 +58,51 @@ const Bar = styled.div`
   }
 `;
 
-const ToolBar = ({ addNote, deleteStatus, toggleDelete, editStatus, toggleEdit, messageStatus,toggleMessage }) => {
+const ToolBar = ({
+  addNote,
+  deleteStatus,
+  toggleDelete,
+  editStatus,
+  toggleEdit,
+  messageStatus,
+  toggleMessage,
+  idPendingEdit,
+  editNote,
+  fetchNote
+}) => {
   const [title, setTitle] = useState("");
   const [textBody, setText] = useState("");
 
-  const submitHandler = (e, aTitle, text) => {
+  const submitHandler = (e, aTitle, text, editID = false) => {
     e.preventDefault();
-    addNote(aTitle, text);
+    if(editStatus && editID){
+        editNote(aTitle,text,editID)
+    }
+    else{
+      addNote(aTitle, text);  
+    }
     setTitle("");
     setText("");
   };
+
+  const fetchCheck = async(id = null)=>{
+      if(id){
+       return await fetchNote(id)
+      }
+  }
+
+  useEffect(()=>{
+    let note = fetchCheck(idPendingEdit)
+    setTitle(note.title)
+    setText(note.textBody)
+  }, {})
   return (
-    <Bar deleteStatus={deleteStatus} editStatus={editStatus} messageStatus={messageStatus}>
-      <form onSubmit={e => submitHandler(e, title, textBody)}>
+    <Bar
+      deleteStatus={deleteStatus}
+      editStatus={editStatus}
+      messageStatus={messageStatus}
+    >
+      <form onSubmit={e => submitHandler(e, title, textBody,idPendingEdit)}>
         <input
           type="text"
           value={title}
@@ -86,13 +119,13 @@ const ToolBar = ({ addNote, deleteStatus, toggleDelete, editStatus, toggleEdit, 
         <button />
       </form>
       <div>
-        <div className='edit' onClick={toggleEdit}>
+        <div className="edit" onClick={toggleEdit}>
           <Edit />
         </div>
-        <div className='message' onClick={toggleMessage}>
+        <div className="message" onClick={toggleMessage}>
           <Message />
         </div>
-        <div className='delete' onClick={toggleDelete}>
+        <div className="delete" onClick={toggleDelete}>
           <Pop />
         </div>
       </div>

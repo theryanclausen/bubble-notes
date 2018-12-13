@@ -62,6 +62,7 @@ const Bubble = props => {
 
   const clickHandler = e =>{
     if (props.title && props.deleteStatus){
+      e.target.style.display='none'
       props.deleteNote(e.target.id)
     }
     if(props.title && props.editStatus){

@@ -5,5 +5,7 @@ module.exports = {
             num += num / 5
         }
         return floor ? Math.floor(num) : num
-    }
+    },
+
+    URL: "https://backend-project-week-lambda.herokuapp.com/api/notes/"
 }
