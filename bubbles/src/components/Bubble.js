@@ -22,7 +22,7 @@ const Abubble = styled.div`
   animation-delay: ${props => (props.delay ? props.delay : "1ms")};
   border-radius: 50%;
   box-shadow: 0 20px 30px #02060780, inset 0px 10px 30px 5px #f3fbfefc;
-  background: #95def280;
+  background: ${props => props.pendingEdit ? '#66ff6680':'#95def280'};
   height: ${props => (props.size ? props.size : "auto")};
   width: ${props => (props.size ? props.size : "auto")};
   position: absolute;
@@ -51,6 +51,24 @@ const Abubble = styled.div`
 `;
 
 const Bubble = props => {
+  const mouseEnterHandler = e => {
+    if (props.deleteStatus && props.title){
+      e.target.style.backgroundColor = '#ff000080'
+    }
+    if (props.editStatus && props.title && !props.idPendingEdit){
+      e.target.style.backgroundColor = '#66ff6680'
+    }
+  }
+
+  const clickHandler = e =>{
+    if (props.title && props.deleteStatus){
+      props.deleteNote(e.target.id)
+    }
+    if(props.title && props.editStatus){
+      props.stageEdit(e.target.id)
+    }
+  }
+
   return (
     <Abubble
       pos={props.pos}
@@ -60,15 +78,12 @@ const Bubble = props => {
       duration={props.duration}
       delayDist={props.delayDist}
       z={props.z}
+      pendingEdit = {props.id && (props.id === parseInt(props.idPendingEdit))}
     >
       <div
         id={props.id}
-        onClick={e => props.title ? props.deleteNote(e.target.id,props.title): ''}
-        onMouseEnter={e =>
-          props.deleteStatus && props.title ?
-            e.target.style.backgroundColor = '#ff000080'
-            : ''  
-        }
+        onClick={e => clickHandler(e)}
+        onMouseEnter={e =>mouseEnterHandler(e)}
         onMouseLeave={e => e.target.style.backgroundColor = 'unset'}
       >
         <h2 >{props.title}</h2>

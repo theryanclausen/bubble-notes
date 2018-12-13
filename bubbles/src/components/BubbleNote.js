@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import Bubble from './Bubble'
 import {randomRange} from '../config/functions'
 
-const BubbleNote = ({note, deleteNote,deleteStatus}) =>{
+const BubbleNote = ({note, deleteNote,deleteStatus, editStatus, stageEdit, idPendingEdit}) =>{
     const [bubbleStats, setBubble] = useState({})
 
     useEffect(()=>{
@@ -19,7 +19,7 @@ const BubbleNote = ({note, deleteNote,deleteStatus}) =>{
 
     
     return (
-        <Bubble {...bubbleStats} deleteStatus={deleteStatus} deleteNote={deleteNote} ></Bubble>
+        <Bubble {...bubbleStats} deleteStatus={deleteStatus} deleteNote={deleteNote} editStatus={editStatus} stageEdit={stageEdit} idPendingEdit={idPendingEdit} ></Bubble>
     )
 }
 

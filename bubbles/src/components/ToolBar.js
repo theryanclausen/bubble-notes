@@ -28,14 +28,21 @@ const Bar = styled.div`
     .delete{
         color: ${props =>props.deleteStatus ? 'red':'white'}
     }
+    .edit{
+        color: ${props =>props.editStatus ? 'lightGreen': 'white'}
+    }
+    .message{
+        color: ${props =>props.messageStatus ? 'yellow':'white'};
+    }
   }
   form {
+      z-index: 200;
     width: 85vw;
-    display: flex;
+    display: ${props => props.editStatus||props.messageStatus ?"flex": 'none'};
     input {
       width: 20%;
       box-shadow: 0 0 10px 4px #f3fbfefc;
-      background: #ffffffcc;
+      background: #ffffff;
       margin: 0 15px;
       padding: 2px 4px;
       border-radius: 5px;
@@ -50,7 +57,7 @@ const Bar = styled.div`
   }
 `;
 
-const ToolBar = ({ addNote, deleteStatus, toggleDelete }) => {
+const ToolBar = ({ addNote, deleteStatus, toggleDelete, editStatus, toggleEdit, messageStatus,toggleMessage }) => {
   const [title, setTitle] = useState("");
   const [textBody, setText] = useState("");
 
@@ -61,7 +68,7 @@ const ToolBar = ({ addNote, deleteStatus, toggleDelete }) => {
     setText("");
   };
   return (
-    <Bar deleteStatus={deleteStatus}>
+    <Bar deleteStatus={deleteStatus} editStatus={editStatus} messageStatus={messageStatus}>
       <form onSubmit={e => submitHandler(e, title, textBody)}>
         <input
           type="text"
@@ -79,10 +86,10 @@ const ToolBar = ({ addNote, deleteStatus, toggleDelete }) => {
         <button />
       </form>
       <div>
-        <div>
+        <div className='edit' onClick={toggleEdit}>
           <Edit />
         </div>
-        <div>
+        <div className='message' onClick={toggleMessage}>
           <Message />
         </div>
         <div className='delete' onClick={toggleDelete}>
