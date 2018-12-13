@@ -45,15 +45,18 @@ const Abubble = styled.div`
       word-wrap: break-word;
       text-align: center;
       margin-bottom: 25px;
-      font-size: 26px;
+      font-size: 36px;
       width:100%;
       transform: translateZ(2000px);
+      font-family: 'Hi Melody', cursive;
     }
     p {
       text-align: center;
-      font-size: 18px;
+      font-size: 25px;
       word-wrap: break-word;
       width:100%;
+      /* font-family: 'Josefin Sans', sans-serif; */
+      font-family: 'Hi Melody', cursive;
     }
   }
 `;

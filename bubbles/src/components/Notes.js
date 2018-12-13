@@ -53,18 +53,10 @@ const Notes = () => {
   };
 
   const editNote = async (title, textBody, id) => {
-    setEdit(false);
-    let pendingNote ;
-    if(!title){
-      pendingNote = {textBody}
-    }
-    if(!textBody){
-      pendingNote = {title}
-    }
-    else{
-      pendingNote = {title,textBody}
-    }
-    const editedNote = await Axios.put(URL + id, pendingNote);
+    setEdit(false)
+    title = title ? title : ' '
+    textBody = textBody ? textBody : ' '
+    const editedNote = await Axios.put(URL + id, {title, textBody});
     setEditID(null);
     setUpdate(editedNote.data);
   };

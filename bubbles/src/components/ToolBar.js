@@ -45,12 +45,14 @@ const Bar = styled.div`
       box-shadow: 0 0 10px 4px #f3fbfefc;
       background: #ffffff;
       margin: 0 15px;
-      padding: 6px 12px;
+      padding: 4px 12px;
       border-radius: 12px;
       border-style: none;
       color: #1a6670;
+      font-family: 'Josefin Sans', sans-serif;
       font-weight:bold;
       outline: none;
+      font-size:17px;
     }
     .textBody {
       width: 79%;
