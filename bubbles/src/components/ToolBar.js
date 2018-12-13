@@ -45,9 +45,12 @@ const Bar = styled.div`
       box-shadow: 0 0 10px 4px #f3fbfefc;
       background: #ffffff;
       margin: 0 15px;
-      padding: 2px 4px;
-      border-radius: 5px;
+      padding: 6px 12px;
+      border-radius: 12px;
       border-style: none;
+      color: #1a6670;
+      font-weight:bold;
+      outline: none;
     }
     .textBody {
       width: 79%;
@@ -67,18 +70,23 @@ const ToolBar = ({
   messageStatus,
   toggleMessage,
   idPendingEdit,
-  editNote,
-  fetchNote
+  editNote
 }) => {
   const [title, setTitle] = useState("");
   const [textBody, setText] = useState("");
 
   const submitHandler = (e, aTitle, text, editID = false) => {
     e.preventDefault();
+    if(!text && !aTitle){
+      return;
+    }
     if(editStatus && editID){
         editNote(aTitle,text,editID)
     }
     else{
+      if(!text || !aTitle){
+        return
+      }
       addNote(aTitle, text);  
     }
     setTitle("");

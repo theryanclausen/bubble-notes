@@ -54,7 +54,17 @@ const Notes = () => {
 
   const editNote = async (title, textBody, id) => {
     setEdit(false);
-    const editedNote = await Axios.put(URL + id, { title, textBody });
+    let pendingNote ;
+    if(!title){
+      pendingNote = {textBody}
+    }
+    if(!textBody){
+      pendingNote = {title}
+    }
+    else{
+      pendingNote = {title,textBody}
+    }
+    const editedNote = await Axios.put(URL + id, pendingNote);
     setEditID(null);
     setUpdate(editedNote.data);
   };
@@ -71,7 +81,7 @@ const Notes = () => {
 
   return (
     <Container deleteStatus={deleteStatus}>
-      {notes.map(note => (
+      {notes.length ? notes.map(note => (
         <BubbleNote
           key={note.id}
           note={note}
@@ -82,8 +92,8 @@ const Notes = () => {
           stageEdit={stageEdit}
           idPendingEdit={idPendingEdit}
           setUpdate={setUpdate}
-        />
-      ))}
+        /> 
+      )):''}
 
       <ToolBar
         addNote={addNote}

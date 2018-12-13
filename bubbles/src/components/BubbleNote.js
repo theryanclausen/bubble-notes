@@ -33,6 +33,7 @@ const BubbleNote = ({
     if (updatedNote && updatedNote.id === note.id) {
       setCurrent(updatedNote);
       setUpdate(null);
+      
     }
   });
 

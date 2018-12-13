@@ -1,4 +1,4 @@
-import React, { useRef, useLayoutEffect } from "react";
+import React, { useRef, useLayoutEffect, useState } from "react";
 import styled from "styled-components";
 import VanillaTilt from "vanilla-tilt";
 
@@ -19,7 +19,7 @@ const Abubble = styled.div`
       margin-left: ${props => props.wiggle || "100px"};
     }
   }
-  z-index: ${props => (props.z ? props.z : "0")}
+  z-index: ${props => (props.z ? props.z : "0")};
   animation-delay: ${props => (props.delay ? props.delay : "1ms")};
   border-radius: 50%;
   box-shadow: 0 20px 30px #02060780, inset 0px 10px 30px 5px #f3fbfefc;
@@ -39,13 +39,15 @@ const Abubble = styled.div`
     height: 333px;
     padding: 50px;
     border-radius:50%;
+    color: white;
+    text-shadow: 2px 2px 11px  #1a6670,-2px -2px 11px  #1a6670;
     h2 {
       word-wrap: break-word;
       text-align: center;
       margin-bottom: 25px;
       font-size: 26px;
       width:100%;
-      
+      transform: translateZ(2000px);
     }
     p {
       text-align: center;
@@ -57,6 +59,7 @@ const Abubble = styled.div`
 `;
 
 const Bubble = props => {
+  const[destroyed,setDestroy] = useState(false)
   const tiltNode = useRef();
 
   useLayoutEffect(() => {
@@ -70,30 +73,42 @@ const Bubble = props => {
       reset: true
     };
     VanillaTilt.init(tiltNode.current, vanillaTiltOptions);
-    return () => tiltNode.current.VanillaTilt.destroy();
+    if (destroyed){
+      tiltNode.current.VanillaTilt.destroy()
+      setDestroy(false)
+      return;
+    }
+    
   }, []);
+
+
   const mouseEnterHandler = e => {
+    let target = e.target.localName === 'h2' ||e.target.localName === 'p' ? e.target.parentNode : e.target
+
     if (props.deleteStatus && props.title) {
-      e.target.style.backgroundColor = "#ff000080";
+      target.style.backgroundColor = "#ff000080";
     }
     if (props.editStatus && props.title && !props.idPendingEdit) {
-      e.target.style.backgroundColor = "#66ff6680";
+      target.style.backgroundColor = "#66ff6680";
     }
   };
 
   const clickHandler = e => {
+    let target = e.target.localName === 'h2' ||e.target.localName === 'p' ? e.target.parentNode : e.target
     if (props.title && props.deleteStatus) {
-      e.target.style.display = "none";
-      props.deleteNote(e.target.id);
+      setDestroy(true)
+      target.style.display = "none"
+      props.deleteNote(target.id);
     }
     if (props.title && props.editStatus) {
-      props.stageEdit(e.target.id);
+      props.stageEdit(target.id);
     }
   };
 
   return (
     <Abubble
       ref={tiltNode}
+      onClick={e => clickHandler(e)}
       pos={props.pos}
       size={props.size}
       wiggle={props.wiggle}
@@ -105,7 +120,7 @@ const Bubble = props => {
     >
       <div
         id={props.id}
-        onClick={e => clickHandler(e)}
+        
         onMouseEnter={e => mouseEnterHandler(e)}
         onMouseLeave={e => (e.target.style.backgroundColor = "unset")}
       >
