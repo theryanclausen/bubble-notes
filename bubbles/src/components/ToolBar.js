@@ -39,7 +39,7 @@ const Bar = styled.div`
     z-index: 200;
     width: 85vw;
     display: ${props =>
-      props.editStatus || props.messageStatus ? "flex" : "none"};
+      (props.editStatus&& props.idPendingEdit) || props.messageStatus ? "flex" : "none"};
     input {
       width: 20%;
       box-shadow: 0 0 10px 4px #f3fbfefc;
@@ -99,8 +99,9 @@ const ToolBar = ({
   return (
     <Bar
       deleteStatus={deleteStatus}
-      editStatus={editStatus&&idPendingEdit}
+      editStatus={editStatus}
       messageStatus={messageStatus}
+      bubbleSelected={idPendingEdit ? 1:0}
     >
       <form onSubmit={e => submitHandler(e, title, textBody,idPendingEdit)}>
         <input
