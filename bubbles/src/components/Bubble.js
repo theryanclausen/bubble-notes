@@ -34,19 +34,23 @@ const Abubble = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    max-width: 333px;
-    padding-top: 100%;
+    width: 333px;
+    height: 333px;
     padding: 50px;
     border-radius:50%;
-    word-wrap: break-word;
     h2 {
+      word-wrap: break-word;
       text-align: center;
       margin-bottom: 25px;
       font-size: 26px;
+      width:100%;
+      
     }
     p {
       text-align: center;
       font-size: 18px;
+      word-wrap: break-word;
+      width:100%;
     }
   }
 `;

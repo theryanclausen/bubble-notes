@@ -97,7 +97,7 @@ const ToolBar = ({
           value={title}
           onChange={e => setTitle(e.target.value)}
           placeholder="title"
-          maxlength="50"
+          maxLength="50"
         />
         <input
           type="text"
@@ -105,7 +105,7 @@ const ToolBar = ({
           value={textBody}
           onChange={e => setText(e.target.value)}
           placeholder="message"
-          maxlength="199"
+          maxLength="199"
         />
         <button />
       </form>
