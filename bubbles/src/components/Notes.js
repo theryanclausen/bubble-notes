@@ -16,12 +16,14 @@ const Notes = () => {
   const [idPendingEdit, setEditID] = useState(null);
   const [messageStatus, setMessage] = useState(false);
   const [updatedNote, setUpdate] = useState(null);
+  const [editBarInit, setBarInit] = useState(false)
 
   const toggleDelete = () => {
     setDelete(!deleteStatus);
     setEdit(false);
     setMessage(false);
     setEditID(null);
+    setBarInit(false);
   };
 
   const toggleEdit = () => {
@@ -29,6 +31,7 @@ const Notes = () => {
     setDelete(false);
     setMessage(false);
     setEditID(null);
+    setBarInit(false);
   };
 
   const toggleMessage = () => {
@@ -36,6 +39,7 @@ const Notes = () => {
     setDelete(false);
     setEdit(false);
     setEditID(null);
+    setBarInit(false)
   };
 
   const stageEdit = id => setEditID(id);
@@ -89,6 +93,7 @@ const Notes = () => {
 
       <ToolBar
         addNote={addNote}
+        notes={notes}
         toggleDelete={toggleDelete}
         deleteStatus={deleteStatus}
         toggleEdit={toggleEdit}
@@ -97,6 +102,9 @@ const Notes = () => {
         messageStatus={messageStatus}
         idPendingEdit={idPendingEdit}
         editNote={editNote}
+        setBarInit={setBarInit}
+        editBarInit={editBarInit}
+        
       />
     </Container>
   );

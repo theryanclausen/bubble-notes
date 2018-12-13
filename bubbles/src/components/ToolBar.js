@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import styled from "styled-components";
 import { Edit, Message, Pop } from "../config/Assets";
 
@@ -65,6 +65,7 @@ const Bar = styled.div`
 
 const ToolBar = ({
   addNote,
+  notes,
   deleteStatus,
   toggleDelete,
   editStatus,
@@ -72,13 +73,26 @@ const ToolBar = ({
   messageStatus,
   toggleMessage,
   idPendingEdit,
-  editNote
+  editNote,
+  setBarInit,
+  editBarInit
 }) => {
   const [title, setTitle] = useState("");
   const [textBody, setText] = useState("");
+  
+
+  useEffect(() =>{
+    if(!editBarInit && idPendingEdit && editStatus){
+      let note = notes.find(note => note.id === parseInt(idPendingEdit))
+      setTitle(note.title)
+      setText(note.textBody)
+      setBarInit(true)
+    }
+  })
 
   const submitHandler = (e, aTitle, text, editID = false) => {
     e.preventDefault();
+    setBarInit(false)
     if(!text && !aTitle){
       return;
     }

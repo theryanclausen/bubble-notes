@@ -55,7 +55,6 @@ const Abubble = styled.div`
       font-size: 25px;
       word-wrap: break-word;
       width:100%;
-      /* font-family: 'Josefin Sans', sans-serif; */
       font-family: 'Hi Melody', cursive;
     }
   }
