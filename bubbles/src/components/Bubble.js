@@ -34,10 +34,11 @@ const Abubble = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 333px;
-    width: 333px;
+    max-width: 333px;
+    padding-top: 100%;
     padding: 50px;
     border-radius:50%;
+    word-wrap: break-word;
     h2 {
       text-align: center;
       margin-bottom: 25px;
