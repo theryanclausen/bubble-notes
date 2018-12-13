@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useRef, useLayoutEffect } from "react";
 import styled from "styled-components";
+import VanillaTilt from "vanilla-tilt";
 
 const Abubble = styled.div`
   @keyframes animateBubble {
@@ -22,7 +23,7 @@ const Abubble = styled.div`
   animation-delay: ${props => (props.delay ? props.delay : "1ms")};
   border-radius: 50%;
   box-shadow: 0 20px 30px #02060780, inset 0px 10px 30px 5px #f3fbfefc;
-  background: ${props => props.pendingEdit ? '#66ff6680':'#95def280'};
+  background: ${props => (props.pendingEdit ? "#66ff6680" : "#95def280")};
   height: ${props => (props.size ? props.size : "auto")};
   width: ${props => (props.size ? props.size : "auto")};
   position: absolute;
@@ -56,27 +57,43 @@ const Abubble = styled.div`
 `;
 
 const Bubble = props => {
-  const mouseEnterHandler = e => {
-    if (props.deleteStatus && props.title){
-      e.target.style.backgroundColor = '#ff000080'
-    }
-    if (props.editStatus && props.title && !props.idPendingEdit){
-      e.target.style.backgroundColor = '#66ff6680'
-    }
-  }
+  const tiltNode = useRef();
 
-  const clickHandler = e =>{
-    if (props.title && props.deleteStatus){
-      e.target.style.display='none'
-      props.deleteNote(e.target.id)
+  useLayoutEffect(() => {
+    const vanillaTiltOptions = {
+      reverse: true,
+      max: 43,
+      speed: 200,
+      transition: true,
+      easing: "cubic-bezier(.03,.98,.52,.99)",
+      perspective: 1999,
+      reset: true
+    };
+    VanillaTilt.init(tiltNode.current, vanillaTiltOptions);
+    return () => tiltNode.current.VanillaTilt.destroy();
+  }, []);
+  const mouseEnterHandler = e => {
+    if (props.deleteStatus && props.title) {
+      e.target.style.backgroundColor = "#ff000080";
     }
-    if(props.title && props.editStatus){
-      props.stageEdit(e.target.id)
+    if (props.editStatus && props.title && !props.idPendingEdit) {
+      e.target.style.backgroundColor = "#66ff6680";
     }
-  }
+  };
+
+  const clickHandler = e => {
+    if (props.title && props.deleteStatus) {
+      e.target.style.display = "none";
+      props.deleteNote(e.target.id);
+    }
+    if (props.title && props.editStatus) {
+      props.stageEdit(e.target.id);
+    }
+  };
 
   return (
     <Abubble
+      ref={tiltNode}
       pos={props.pos}
       size={props.size}
       wiggle={props.wiggle}
@@ -84,16 +101,16 @@ const Bubble = props => {
       duration={props.duration}
       delayDist={props.delayDist}
       z={props.z}
-      pendingEdit = {props.id && (props.id === parseInt(props.idPendingEdit))}
+      pendingEdit={props.id && props.id === parseInt(props.idPendingEdit)}
     >
       <div
         id={props.id}
         onClick={e => clickHandler(e)}
-        onMouseEnter={e =>mouseEnterHandler(e)}
-        onMouseLeave={e => e.target.style.backgroundColor = 'unset'}
+        onMouseEnter={e => mouseEnterHandler(e)}
+        onMouseLeave={e => (e.target.style.backgroundColor = "unset")}
       >
-        <h2 >{props.title}</h2>
-        <p >{props.textBody}</p>
+        <h2>{props.title}</h2>
+        <p>{props.textBody}</p>
       </div>
     </Abubble>
   );

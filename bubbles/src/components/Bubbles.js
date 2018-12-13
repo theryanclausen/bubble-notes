@@ -2,6 +2,7 @@ import React from "react";
 import Bubble from "./Bubble";
 import { randomRange } from "../config/functions";
 
+
 const Bubbles = () => {
   const mediumBubbles = () => {
     return {
