@@ -88,6 +88,10 @@ const ToolBar = ({
       setText(note.textBody)
       setBarInit(true)
     }
+    if(editBarInit && !editStatus){
+      setTitle('')
+      setText('')
+    }
   })
 
   const submitHandler = (e, aTitle, text, editID = false) => {

@@ -42,7 +42,11 @@ const Notes = () => {
     setBarInit(false)
   };
 
-  const stageEdit = id => setEditID(id);
+
+  const stageEdit = id => {
+    
+    setEditID(id)
+  };
 
   const fetchNotes = async () => {
     const fetchedNotes = await Axios.get(URL);
