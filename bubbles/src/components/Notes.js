@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useReducer } from "react";
 import Axios from "axios";
 import styled from "styled-components";
 import BubbleNote from "./BubbleNote";
 import ToolBar from "./ToolBar";
-import { URL } from "../config/functions";
+import { URL } from "../config/config";
 const Container = styled.div`
   width: 100%;
   height: 100%;
@@ -11,42 +11,28 @@ const Container = styled.div`
 
 const Notes = () => {
   const [notes, setNotes] = useState([]);
-  const [deleteStatus, setDelete] = useState(false);
-  const [editStatus, setEdit] = useState(false);
-  const [idPendingEdit, setEditID] = useState(null);
-  const [messageStatus, setMessage] = useState(false);
   const [updatedNote, setUpdate] = useState(null);
-  const [editBarInit, setBarInit] = useState(false)
+  const initialState = {status:null, id:null}
 
-  const toggleDelete = () => {
-    setDelete(!deleteStatus);
-    setEdit(false);
-    setMessage(false);
-    setEditID(null);
-    setBarInit(false);
-  };
+  const [bubbleControl, dispatch] = useReducer((state,action) =>{
+    switch (action.type){
+      case state.status:
+        return initialState;
+      case 'new message':
+        return {status:'new message', id:null}
+      case 'delete':
+        return {status:'delete' , id: null}
+      case 'edit':
+        return {status:'edit', id: null}
+      case 'edit select':
+        return {status:'edit', id: action.id}
+      case 'sent':
+        return initialState
+      default:
+        return state;
+    }
 
-  const toggleEdit = () => {
-    setEdit(!editStatus);
-    setDelete(false);
-    setMessage(false);
-    setEditID(null);
-    setBarInit(false);
-  };
-
-  const toggleMessage = () => {
-    setMessage(!messageStatus);
-    setDelete(false);
-    setEdit(false);
-    setEditID(null);
-    setBarInit(false)
-  };
-
-
-  const stageEdit = id => {
-    
-    setEditID(id)
-  };
+  }, initialState)
 
   const fetchNotes = async () => {
     const fetchedNotes = await Axios.get(URL);
@@ -57,20 +43,19 @@ const Notes = () => {
 
   const addNote = async (title, textBody) => {
     await Axios.post(URL, { title, textBody });
-    setMessage(false);
+    dispatch({type:'sent'});
   };
 
   const editNote = async (title, textBody, id) => {
-    setEdit(false)
     title = title ? title : ' '
     textBody = textBody ? textBody : ' '
     const editedNote = await Axios.put(URL + id, {title, textBody});
-    setEditID(null);
     setUpdate(editedNote.data);
+    dispatch({type:'sent'});
   };
 
   const deleteNote = id => {
-    if (deleteStatus) {
+    if (bubbleControl.status === 'delete') {
       Axios.delete(URL + id);
     }
   };
@@ -80,35 +65,25 @@ const Notes = () => {
   });
 
   return (
-    <Container deleteStatus={deleteStatus}>
+    <Container >
       {notes.length ? notes.map(note => (
         <BubbleNote
           key={note.id}
           note={note}
           updatedNote={updatedNote}
           deleteNote={deleteNote}
-          deleteStatus={deleteStatus}
-          editStatus={editStatus}
-          stageEdit={stageEdit}
-          idPendingEdit={idPendingEdit}
           setUpdate={setUpdate}
+          dispatch={dispatch}
+        bubbleControl={bubbleControl}
         /> 
       )):''}
 
       <ToolBar
         addNote={addNote}
         notes={notes}
-        toggleDelete={toggleDelete}
-        deleteStatus={deleteStatus}
-        toggleEdit={toggleEdit}
-        editStatus={editStatus}
-        toggleMessage={toggleMessage}
-        messageStatus={messageStatus}
-        idPendingEdit={idPendingEdit}
         editNote={editNote}
-        setBarInit={setBarInit}
-        editBarInit={editBarInit}
-        
+        dispatch={dispatch}
+        bubbleControl={bubbleControl}
       />
     </Container>
   );

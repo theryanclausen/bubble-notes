@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Bubble from "./Bubble";
-import { randomRange } from "../config/functions";
+import { randomRange } from "../config/config";
 
 const BubbleNote = ({
   note,
-  deleteNote,
-  deleteStatus,
-  editStatus,
-  stageEdit,
-  idPendingEdit,
   updatedNote,
-  setUpdate
+  setUpdate,
+  bubbleControl,
+  dispatch,
+  deleteNote
 }) => {
   const [bubbleStats, setBubble] = useState({});
   const [currentNote, setCurrent] = useState({});
@@ -41,11 +39,9 @@ const BubbleNote = ({
     <Bubble
       {...currentNote}
       {...bubbleStats}
-      deleteStatus={deleteStatus}
+      bubbleControl = {bubbleControl}
+      dispatch = {dispatch}
       deleteNote={deleteNote}
-      editStatus={editStatus}
-      stageEdit={stageEdit}
-      idPendingEdit={idPendingEdit}
     />
   );
 };

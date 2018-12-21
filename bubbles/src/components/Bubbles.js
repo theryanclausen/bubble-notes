@@ -1,6 +1,6 @@
 import React from "react";
 import Bubble from "./Bubble";
-import { randomRange } from "../config/functions";
+import { randomRange } from "../config/config";
 
 
 const Bubbles = () => {

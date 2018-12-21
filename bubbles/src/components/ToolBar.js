@@ -1,4 +1,4 @@
-import React, { useState , useEffect} from "react";
+import React, { useRef , useEffect} from "react";
 import styled from "styled-components";
 import { Edit, Message, Pop } from "../config/Assets";
 
@@ -26,20 +26,20 @@ const Bar = styled.div`
       }
     }
     .delete {
-      color: ${props => (props.deleteStatus ? "red" : "white")};
+      color: ${props => (props.bubbleControl.status === 'delete' ? "red" : "white")};
     }
     .edit {
-      color: ${props => (props.editStatus ? "lightGreen" : "white")};
+      color: ${props => (props.bubbleControl.status === 'edit' ? "lightGreen" : "white")};
     }
     .message {
-      color: ${props => (props.messageStatus ? "yellow" : "white")};
+      color: ${props => (props.bubbleControl.status === 'new message' ? "yellow" : "white")};
     }
   }
   form {
     z-index: 200;
     width: 85vw;
     display: ${props =>
-      (props.editStatus&& props.bubbleSelected) || props.messageStatus ? "flex" : "none"};
+      (props.bubbleControl.status === 'edit'&& props.bubbleControl.id) || props.bubbleControl.status === 'new message' ? "flex" : "none"};
     input {
       width: 20%;
       box-shadow: 0 0 10px 4px #f3fbfefc;
@@ -66,41 +66,29 @@ const Bar = styled.div`
 const ToolBar = ({
   addNote,
   notes,
-  deleteStatus,
-  toggleDelete,
-  editStatus,
-  toggleEdit,
-  messageStatus,
-  toggleMessage,
-  idPendingEdit,
   editNote,
-  setBarInit,
-  editBarInit
+  bubbleControl,
+  dispatch
 }) => {
-  const [title, setTitle] = useState("");
-  const [textBody, setText] = useState("");
+  const titleRef = useRef("");
+  const textBodyRef = useRef("");
   
 
   useEffect(() =>{
-    if(!editBarInit && idPendingEdit && editStatus){
-      let note = notes.find(note => note.id === parseInt(idPendingEdit))
-      setTitle(note.title)
-      setText(note.textBody)
-      setBarInit(true)
+    if(bubbleControl.status === 'edit' && bubbleControl.id){
+      let note = notes.find(note => note.id === parseInt(bubbleControl.id))
+      titleRef.current.value =note.title
+      textBodyRef.current.value = note.textBody
     }
-    if(editBarInit && !editStatus){
-      setTitle('')
-      setText('')
-    }
+
   })
 
   const submitHandler = (e, aTitle, text, editID = false) => {
     e.preventDefault();
-    setBarInit(false)
     if(!text && !aTitle){
       return;
     }
-    if(editStatus && editID){
+    if(bubbleControl.status === 'edit' && bubbleControl.id){
         editNote(aTitle,text,editID)
     }
     else{
@@ -109,42 +97,37 @@ const ToolBar = ({
       }
       addNote(aTitle, text);  
     }
-    setTitle("");
-    setText("");
+    titleRef.current.value =''
+      textBodyRef.current.value =''
   };
   return (
     <Bar
-      deleteStatus={deleteStatus}
-      editStatus={editStatus}
-      messageStatus={messageStatus}
-      bubbleSelected={idPendingEdit ? 1:0}
+      bubbleControl={bubbleControl}
     >
-      <form onSubmit={e => submitHandler(e, title, textBody,idPendingEdit)}>
+      <form onSubmit={e => submitHandler(e, titleRef.current.value, textBodyRef.current.value,bubbleControl.id)}>
         <input
           type="text"
-          value={title}
-          onChange={e => setTitle(e.target.value)}
+          ref = {titleRef}
           placeholder="title"
           maxLength="50"
         />
         <input
           type="text"
           className="textBody"
-          value={textBody}
-          onChange={e => setText(e.target.value)}
+          ref= {textBodyRef}
           placeholder="message"
           maxLength="199"
         />
         <button />
       </form>
       <div>
-        <div className="edit" onClick={toggleEdit}>
+        <div className="edit" onClick={() => dispatch({type:'edit'})}>
           <Edit />
         </div>
-        <div className="message" onClick={toggleMessage}>
+        <div className="message" onClick={() => dispatch({type:'new message'})}>
           <Message />
         </div>
-        <div className="delete" onClick={toggleDelete}>
+        <div className="delete" onClick={() => dispatch({type:'delete'})}>
           <Pop />
         </div>
       </div>

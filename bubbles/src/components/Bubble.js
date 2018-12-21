@@ -38,30 +38,30 @@ const Abubble = styled.div`
     width: 333px;
     height: 333px;
     padding: 50px;
-    border-radius:50%;
+    border-radius: 50%;
     color: white;
-    text-shadow: 2px 2px 11px  #1a6670,-2px -2px 11px  #1a6670;
+    text-shadow: 2px 2px 11px #1a6670, -2px -2px 11px #1a6670;
     h2 {
       word-wrap: break-word;
       text-align: center;
       margin-bottom: 25px;
       font-size: 36px;
-      width:100%;
+      width: 100%;
       transform: translateZ(2000px);
-      font-family: 'Hi Melody', cursive;
+      font-family: "Hi Melody", cursive;
     }
     p {
       text-align: center;
       font-size: 25px;
       word-wrap: break-word;
-      width:100%;
-      font-family: 'Hi Melody', cursive;
+      width: 100%;
+      font-family: "Hi Melody", cursive;
     }
   }
 `;
 
 const Bubble = props => {
-  const[destroyed,setDestroy] = useState(false)
+  const [destroyed, setDestroy] = useState(false);
   const tiltNode = useRef();
 
   useLayoutEffect(() => {
@@ -75,35 +75,44 @@ const Bubble = props => {
       reset: true
     };
     VanillaTilt.init(tiltNode.current, vanillaTiltOptions);
-    if (destroyed){
-      tiltNode.current.VanillaTilt.destroy()
-      setDestroy(false)
+    if (destroyed) {
+      tiltNode.current.VanillaTilt.destroy();
+      setDestroy(false);
       return;
     }
-    
   }, []);
 
-
   const mouseEnterHandler = e => {
-    let target = e.target.localName === 'h2' ||e.target.localName === 'p' ? e.target.parentNode : e.target
-
-    if (props.deleteStatus && props.title) {
-      target.style.backgroundColor = "#ff000080";
-    }
-    if (props.editStatus && props.title && !props.idPendingEdit) {
-      target.style.backgroundColor = "#66ff6680";
+    let target =
+      e.target.localName === "h2" || e.target.localName === "p"
+        ? e.target.parentNode
+        : e.target;
+    if (props.bubbleControl) {
+      if (props.bubbleControl.status === "delete" && props.title) {
+        target.style.backgroundColor = "#ff000080";
+      }
+      if (
+        props.bubbleControl.status === "edit" &&
+        props.title &&
+        !props.bubbleControl.id
+      ) {
+        target.style.backgroundColor = "#66ff6680";
+      }
     }
   };
 
   const clickHandler = e => {
-    let target = e.target.localName === 'h2' ||e.target.localName === 'p' ? e.target.parentNode : e.target
-    if (props.title && props.deleteStatus) {
-      setDestroy(true)
-      target.style.display = "none"
+    let target =
+      e.target.localName === "h2" || e.target.localName === "p"
+        ? e.target.parentNode
+        : e.target;
+    if (props.title && props.bubbleControl.status === "delete") {
+      setDestroy(true);
+      target.style.display = "none";
       props.deleteNote(target.id);
     }
-    if (props.title && props.editStatus) {
-      props.stageEdit(target.id);
+    if (props.title && props.bubbleControl.status === "edit") {
+      props.dispatch({type:'edit select',id:target.id});
     }
   };
 
@@ -118,11 +127,10 @@ const Bubble = props => {
       duration={props.duration}
       delayDist={props.delayDist}
       z={props.z}
-      pendingEdit={props.id && props.id === parseInt(props.idPendingEdit)}
+      pendingEdit={props.id && props.id === parseInt(props.bubbleControl.id)}
     >
       <div
         id={props.id}
-        
         onMouseEnter={e => mouseEnterHandler(e)}
         onMouseLeave={e => (e.target.style.backgroundColor = "unset")}
       >
