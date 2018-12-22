@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Bubble from "./Bubble";
-import { randomRange } from "../config/config";
+import { textBubbles } from "../config/config";
 
 const BubbleNote = ({
   note,
@@ -14,14 +14,7 @@ const BubbleNote = ({
   const [currentNote, setCurrent] = useState({});
 
   useEffect(() => {
-    setBubble({
-      pos: randomRange(10, 70) + "%",
-      wiggle: randomRange(2, 180, true) + "px",
-      wiggleDur: randomRange(1500, 8000, true) + "ms",
-      duration: randomRange(8666, 64232, true) + "ms",
-      delayDist: -1 * randomRange(293, 950, true) + "px",
-      z: 100
-    });
+    setBubble(textBubbles());
   }, {});
 
   useEffect(() => {

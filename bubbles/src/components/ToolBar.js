@@ -80,6 +80,10 @@ const ToolBar = ({
       titleRef.current.value =note.title
       textBodyRef.current.value = note.textBody
     }
+    else{
+      titleRef.current.value =''
+      textBodyRef.current.value = ''
+    }
 
   })
 
