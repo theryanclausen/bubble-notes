@@ -31,12 +31,12 @@ const Bubbles = () => {
       {Array(3)
         .fill(null)
         .map(x => (
-          <Bubble {...mediumBubbles()} />
+          <Bubble bubbleStats={mediumBubbles()} />
         ))}
       {Array(33)
         .fill(null)
         .map(x => (
-          <Bubble {...tinyBubbles()} />
+          <Bubble bubbleStats={tinyBubbles()} />
         ))}
     </React.Fragment>
   );

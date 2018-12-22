@@ -60,7 +60,7 @@ const Abubble = styled.div`
   }
 `;
 
-const Bubble = props => {
+const Bubble = ({bubbleStats,title, textBody, bubbleControl, deleteNote, dispatch, id}) => {
   const [destroyed, setDestroy] = useState(false);
   const tiltNode = useRef();
 
@@ -87,14 +87,14 @@ const Bubble = props => {
       e.target.localName === "h2" || e.target.localName === "p"
         ? e.target.parentNode
         : e.target;
-    if (props.bubbleControl) {
-      if (props.bubbleControl.status === "delete" && props.title) {
+    if (bubbleControl) {
+      if (bubbleControl.status === "delete" && title) {
         target.style.backgroundColor = "#ff000080";
       }
       if (
-        props.bubbleControl.status === "edit" &&
-        props.title &&
-        !props.bubbleControl.id
+        bubbleControl.status === "edit" &&
+        title &&
+        !bubbleControl.id
       ) {
         target.style.backgroundColor = "#66ff6680";
       }
@@ -106,13 +106,13 @@ const Bubble = props => {
       e.target.localName === "h2" || e.target.localName === "p"
         ? e.target.parentNode
         : e.target;
-    if (props.title && props.bubbleControl.status === "delete") {
+    if (title && bubbleControl.status === "delete") {
       setDestroy(true);
       target.style.display = "none";
-      props.deleteNote(target.id);
+      deleteNote(target.id);
     }
-    if (props.title && props.bubbleControl.status === "edit") {
-      props.dispatch({type:'edit select',id:target.id});
+    if (title && bubbleControl.status === "edit") {
+      dispatch({type:'edit select',id:target.id});
     }
   };
 
@@ -120,22 +120,16 @@ const Bubble = props => {
     <Abubble
       ref={tiltNode}
       onClick={e => clickHandler(e)}
-      pos={props.pos}
-      size={props.size}
-      wiggle={props.wiggle}
-      wiggleDur={props.wiggleDur}
-      duration={props.duration}
-      delayDist={props.delayDist}
-      z={props.z}
-      pendingEdit={props.id && props.id === parseInt(props.bubbleControl.id)}
+      {...bubbleStats}
+      pendingEdit={id && id === parseInt(bubbleControl.id)}
     >
       <div
-        id={props.id}
+        id={id}
         onMouseEnter={e => mouseEnterHandler(e)}
         onMouseLeave={e => (e.target.style.backgroundColor = "unset")}
       >
-        <h2>{props.title}</h2>
-        <p>{props.textBody}</p>
+        <h2>{title}</h2>
+        <p>{textBody}</p>
       </div>
     </Abubble>
   );

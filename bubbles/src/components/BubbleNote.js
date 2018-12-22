@@ -38,7 +38,7 @@ const BubbleNote = ({
   return (
     <Bubble
       {...currentNote}
-      {...bubbleStats}
+      bubbleStats={bubbleStats}
       bubbleControl = {bubbleControl}
       dispatch = {dispatch}
       deleteNote={deleteNote}
