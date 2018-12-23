@@ -7,7 +7,7 @@ const Bubbles = () => {
   
   return (
     <React.Fragment>
-      {Array(3)
+      {Array(8)
         .fill(null)
         .map(x => {
           const bubbleStats =bubbles()

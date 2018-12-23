@@ -26,9 +26,10 @@ setGlobal({...initialState})
 //   }
 // }
 
-addReducer('newNote', state => state.status === 'new note' ? initialState: {status:'new note', id:null })
+addReducer('newNote', state => state.status === 'newNote' ? initialState: {status:'newNote', id:null })
 addReducer('delete', state => state.status === 'delete' ? initialState : {status:'delete' , id: null})
 addReducer('edit', state => state.status === 'edit' ? initialState : {status:'edit' , id: null})
+addReducer('clear', () => initialState)
 
 ReactDOM.render(
   

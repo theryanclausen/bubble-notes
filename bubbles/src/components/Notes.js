@@ -43,7 +43,7 @@ const Notes = () => {
 
   const addNote = async (title, textBody) => {
     await Axios.post(URL, { title, textBody });
-    dispatch({type:'sent'});
+    dispatch('sent')
   };
 
   const editNote = async (title, textBody, id) => {
@@ -51,7 +51,6 @@ const Notes = () => {
     textBody = textBody ? textBody : ' '
     const editedNote = await Axios.put(URL + id, {title, textBody});
     setUpdate(editedNote.data);
-    dispatch({type:'sent'});
   };
 
   const deleteNote = id => {
