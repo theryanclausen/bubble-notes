@@ -10,11 +10,13 @@ const Background = styled.div`
   overflow: hidden;
 `;
 
-const App = () => (
+const App = () => {
+
+return (
   <Background>
     <Notes />
     <Bubbles />
   </Background>
 );
-
+}
 export default App;

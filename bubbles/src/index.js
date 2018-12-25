@@ -1,39 +1,60 @@
-import React from "react";
-import {addReducer, setGlobal} from 'reactn'
+import React, { setGlobal, addReducer } from "reactn";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
+import { URL } from "./config/config";
+import Axios from "axios";
 
-const initialState = {status:null, id:null, testTitle:'this is a test', testTextBody:'test test test test'}
-setGlobal({...initialState})
+const nullOut = {
+  status: null,
+  id: null,
+  updatedNote: {}
+};
 
-// const [bubbleControl, dispatch] = useReducer((state,action) =>{
-//   switch (action.type){
-//     case state.status:
-//       return initialState;
-//     case 'new message':
-//       return {status:'new message', id:null}
-//     case 'delete':
-//       return 
-//     case 'edit':
-//       return {status:'edit', id: null}
-//     case 'edit select':
-//       return {status:'edit', id: action.id}
-//     case 'sent':
-//       return initialState
-//     default:
-//       return state;
-//   }
-// }
+const initialState = {
+  ...nullOut,
+  notes: []
+};
 
-addReducer('newNote', state => state.status === 'newNote' ? initialState: {status:'newNote', id:null })
-addReducer('delete', state => state.status === 'delete' ? initialState : {status:'delete' , id: null})
-addReducer('edit', state => state.status === 'edit' ? initialState : {status:'edit' , id: null})
-addReducer('clear', () => initialState)
+setGlobal(initialState);
+
+addReducer("newNote", state =>
+  state.status === "newNote"
+    ? { ...state, ...nullOut }
+    : { status: "newNote", id: null }
+);
+addReducer("addNote", async (state, newNote) => {
+  const newNoteRes = await Axios.post(URL, newNote);
+  const notes = [...state.notes, newNoteRes.data];
+  return { ...state, ...nullOut, notes };
+});
+addReducer("delete", state =>
+  state.status === "delete"
+    ? { ...state, ...nullOut }
+    : { status: "delete", id: null }
+);
+addReducer("deleteNote", async (state, id) => {
+  await Axios.delete(URL + id);
+  return state;
+});
+addReducer("edit", state =>
+  state.status === "edit" || state.status === "editSelect"
+    ? { ...state, ...nullOut }
+    : { status: "edit", id: null }
+);
+addReducer("editSend", async (state, editedNote) => {
+  const editedNoteRes = await Axios.put(URL + state.id, editedNote);
+  return { ...state, status: "sent", updatedNote: {...editedNoteRes.data} };
+});
+addReducer("editSelect", (state, id) => ({
+  ...state,
+  status: "editSelect",
+  id
+}));
+addReducer("clear", state => ({ ...state, status:null, id:null }));
 
 ReactDOM.render(
-  
-    <App />,
-  
+  <App />,
+
   document.getElementById("root")
 );

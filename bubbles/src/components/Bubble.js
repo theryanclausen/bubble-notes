@@ -1,4 +1,4 @@
-import React, { useRef, useLayoutEffect, useState } from "react";
+import React, { useRef, useLayoutEffect, useState, useGlobal } from "reactn";
 import styled from "styled-components";
 import VanillaTilt from "vanilla-tilt";
 
@@ -60,9 +60,11 @@ const Abubble = styled.div`
   }
 `;
 
-const Bubble = ({bubbleStats,title, textBody, bubbleControl, deleteNote, dispatch, id}) => {
+const Bubble = ({ bubbleStats, title, textBody, id }) => {
   const [destroyed, setDestroy] = useState(false);
   const tiltNode = useRef();
+  // eslint-disable-next-line
+  const [global, setGlobal] = useGlobal();
 
   useLayoutEffect(() => {
     const vanillaTiltOptions = {
@@ -87,17 +89,12 @@ const Bubble = ({bubbleStats,title, textBody, bubbleControl, deleteNote, dispatc
       e.target.localName === "h2" || e.target.localName === "p"
         ? e.target.parentNode
         : e.target;
-    if (bubbleControl) {
-      if (bubbleControl.status === "delete" && title) {
-        target.style.backgroundColor = "#ff000080";
-      }
-      if (
-        bubbleControl.status === "edit" &&
-        title &&
-        !bubbleControl.id
-      ) {
-        target.style.backgroundColor = "#66ff6680";
-      }
+
+    if (global.status === "delete" && title) {
+      target.style.backgroundColor = "#ff000080";
+    }
+    if (global.status === "edit" && title) {
+      target.style.backgroundColor = "#66ff6680";
     }
   };
 
@@ -106,13 +103,13 @@ const Bubble = ({bubbleStats,title, textBody, bubbleControl, deleteNote, dispatc
       e.target.localName === "h2" || e.target.localName === "p"
         ? e.target.parentNode
         : e.target;
-    if (title && bubbleControl.status === "delete") {
+    if (title && global.status === "delete") {
       setDestroy(true);
       target.style.display = "none";
-      deleteNote(target.id);
+      global.deleteNote(target.id);
     }
-    if (title && bubbleControl.status === "edit") {
-      dispatch({type:'edit select',id:target.id});
+    if (title && global.status === "edit") {
+      global.editSelect(target.id);
     }
   };
 
@@ -121,7 +118,7 @@ const Bubble = ({bubbleStats,title, textBody, bubbleControl, deleteNote, dispatc
       ref={tiltNode}
       onClick={e => clickHandler(e)}
       {...bubbleStats}
-      pendingEdit={id && id === parseInt(bubbleControl.id)}
+      pendingEdit={global.status === "editSelect" && id === parseInt(global.id)}
     >
       <div
         id={id}

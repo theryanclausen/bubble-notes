@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useGlobal } from "reactn";
 import styled from "styled-components";
 import { Edit, Message, Pop } from "../config/Assets";
 
@@ -14,8 +14,8 @@ const Bar = styled.div`
   background: #2d94b280;
   box-shadow: 0 0 30px 14px #f3fbfefc;
   height: 40px;
-  @media (max-width: 700px){
-    height:${props => (props.viewBar ? "200px" : "125px")};
+  @media (max-width: 700px) {
+    height: ${props => (props.viewBar ? "200px" : "125px")};
     width: ${props => (props.viewBar ? "95vw" : "40px")};
   }
   div {
@@ -26,10 +26,10 @@ const Bar = styled.div`
     justify-content: space-around;
     align-items: center;
     align-self: flex-start;
-    @media (max-width: 700px){
+    @media (max-width: 700px) {
       width: 40px;
       height: 125px;
-      flex-direction:column;
+      flex-direction: column;
     }
     div {
       z-index: 500;
@@ -38,16 +38,13 @@ const Bar = styled.div`
       }
     }
     .delete {
-      color: ${props =>
-        props.bubbleControl.status === "delete" ? "red" : "white"};
+      color: ${props => (props.status === "delete" ? "red" : "white")};
     }
     .edit {
-      color: ${props =>
-        props.bubbleControl.status === "edit" ? "lightGreen" : "white"};
+      color: ${props => (props.status === "edit" ? "lightGreen" : "white")};
     }
-    .message {
-      color: ${props =>
-        props.bubbleControl.status === "new message" ? "yellow" : "white"};
+    .create {
+      color: ${props => (props.status === "newNote" ? "yellow" : "white")};
     }
   }
   form {
@@ -58,11 +55,12 @@ const Bar = styled.div`
     @media (max-width: 700px) {
       flex-direction: column;
     }
-    input, textarea {
+    input,
+    textarea {
       width: 20%;
       box-shadow: 0 0 10px 4px #f3fbfefc;
       background: #ffffff;
-      margin: 8px ;
+      margin: 8px;
       padding: 4px 12px;
       border-radius: 12px;
       border-style: none;
@@ -71,19 +69,18 @@ const Bar = styled.div`
       font-weight: bold;
       outline: none;
       font-size: 17px;
-      @media (max-width: 700px){
+      @media (max-width: 700px) {
         width: 95%;
-        
-    }
+      }
     }
     textarea {
       width: 79%;
       resize: none;
-      overflow:hidden;
-      @media (max-width: 700px){
+      overflow: hidden;
+      @media (max-width: 700px) {
         width: 95%;
         height: 100%;
-    }
+      }
     }
     button {
       display: none;
@@ -91,14 +88,18 @@ const Bar = styled.div`
   }
 `;
 
-const ToolBar = ({ addNote, notes, editNote, bubbleControl, dispatch }) => {
+const ToolBar = () => {
+  // eslint-disable-next-line
+  const [global, setGlobal] = useGlobal();
   const titleRef = useRef("");
   const textBodyRef = useRef("");
-  const button = useRef(null)
+  const button = useRef(null);
 
   useEffect(() => {
-    if (bubbleControl.status === "edit" && bubbleControl.id) {
-      let note = notes.find(note => note.id === parseInt(bubbleControl.id));
+    if (global.status === "editSelect") {
+      let note = global.notes.find(
+        note => note.id === parseInt(global.id)
+      );
       titleRef.current.value = note.title;
       textBodyRef.current.value = note.textBody;
     } else {
@@ -107,25 +108,18 @@ const ToolBar = ({ addNote, notes, editNote, bubbleControl, dispatch }) => {
     }
   });
 
-
-
-  const submitHandler = async e => {
+  const submitHandler = e => {
     e.preventDefault();
     if (!textBodyRef.current.value && !titleRef.current.value) {
       return;
     }
-    dispatch({type:bubbleControl.status})
-    if (bubbleControl.status === "edit" && bubbleControl.id) {
-      editNote(
-        titleRef.current.value,
-        textBodyRef.current.value,
-        bubbleControl.id
-      );
+    if (global.status === "editSelect") {
+      global.editSend({title:titleRef.current.value, textBody:textBodyRef.current.value});
     } else {
       if (!textBodyRef.current.value || !titleRef.current.value) {
         return;
       }
-      addNote(titleRef.current.value, textBodyRef.current.value);
+      global.addNote({title:titleRef.current.value, textBody:textBodyRef.current.value});
     }
     titleRef.current.value = "";
     textBodyRef.current.value = "";
@@ -134,17 +128,14 @@ const ToolBar = ({ addNote, notes, editNote, bubbleControl, dispatch }) => {
   const onEnterPress = e => {
     if (e.keyCode === 13) {
       e.preventDefault();
-     button.current.click()
+      button.current.click();
     }
   };
 
   return (
     <Bar
-      bubbleControl={bubbleControl}
-      viewBar={
-        (bubbleControl.status === "edit" && bubbleControl.id) ||
-        bubbleControl.status === "new message"
-      }
+      status ={global.status}
+      viewBar={global.status === "editSelect" || global.status === "newNote"}
     >
       <form onSubmit={submitHandler}>
         <input type="text" ref={titleRef} placeholder="title" maxLength="50" />
@@ -159,16 +150,19 @@ const ToolBar = ({ addNote, notes, editNote, bubbleControl, dispatch }) => {
         <button ref={button} />
       </form>
       <div>
-        <div className="edit" onClick={() => dispatch({ type: "edit" })}>
+        <div className="edit" onClick={global.edit}>
           <Edit />
         </div>
         <div
-          className="message"
-          onClick={() => dispatch({ type: "new message" })}
+          className="create"
+          onClick={global.newNote}
         >
           <Message />
         </div>
-        <div className="delete" onClick={() => dispatch({ type: "delete" })}>
+        <div
+          className="delete"
+          onClick={global.delete}
+        >
           <Pop />
         </div>
       </div>
