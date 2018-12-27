@@ -21,7 +21,7 @@ const Notes = () => {
 
   useEffect(() => {
     fetchNotes(); 
-  },[]);
+  },[...global.notes]);
 
   return (
     <Container>

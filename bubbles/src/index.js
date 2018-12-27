@@ -44,7 +44,12 @@ addReducer("edit", state =>
 );
 addReducer("editSend", async (state, editedNote) => {
   const editedNoteRes = await Axios.put(URL + state.id, editedNote);
-  return { ...state, status: "sent", updatedNote: {...editedNoteRes.data} };
+  let alteredNotes = [...state.notes]
+  let index = alteredNotes.findIndex(x => x.id === parseInt(editedNoteRes.data.id))
+  if(index >= 0){
+    alteredNotes.splice(index,1,editedNoteRes.data)
+  }
+  return { ...state, status: "sent", updatedNote: {...editedNoteRes.data} , notes: alteredNotes};
 });
 addReducer("editSelect", (state, id) => ({
   ...state,

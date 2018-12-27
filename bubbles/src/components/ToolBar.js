@@ -1,92 +1,6 @@
 import React, { useRef, useEffect, useGlobal } from "reactn";
-import styled from "styled-components";
+import {Bar} from "../config/styled-containers"
 import { Edit, Message, Pop } from "../config/Assets";
-
-const Bar = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: absolute;
-  width: ${props => (props.viewBar ? "95vw" : "125px")};
-  top: 25px;
-  right: 15px;
-  border-radius: 10px;
-  background: #2d94b280;
-  box-shadow: 0 0 30px 14px #f3fbfefc;
-  height: 40px;
-  @media (max-width: 700px) {
-    height: ${props => (props.viewBar ? "200px" : "125px")};
-    width: ${props => (props.viewBar ? "95vw" : "40px")};
-  }
-  div {
-    color: white;
-    width: 125px;
-    height: 40px;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    align-self: flex-start;
-    @media (max-width: 700px) {
-      width: 40px;
-      height: 125px;
-      flex-direction: column;
-    }
-    div {
-      z-index: 500;
-      &:hover {
-        cursor: pointer;
-      }
-    }
-    .delete {
-      color: ${props => (props.status === "delete" ? "red" : "white")};
-    }
-    .edit {
-      color: ${props => (props.status === "edit" ? "lightGreen" : "white")};
-    }
-    .create {
-      color: ${props => (props.status === "newNote" ? "yellow" : "white")};
-    }
-  }
-  form {
-    z-index: 200;
-    width: 100%;
-    height: 100%;
-    display: ${props => (props.viewBar ? "flex" : "none")};
-    @media (max-width: 700px) {
-      flex-direction: column;
-    }
-    input,
-    textarea {
-      width: 20%;
-      box-shadow: 0 0 10px 4px #f3fbfefc;
-      background: #ffffff;
-      margin: 8px;
-      padding: 4px 12px;
-      border-radius: 12px;
-      border-style: none;
-      color: #1a6670;
-      font-family: "Josefin Sans", sans-serif;
-      font-weight: bold;
-      outline: none;
-      font-size: 17px;
-      @media (max-width: 700px) {
-        width: 95%;
-      }
-    }
-    textarea {
-      width: 79%;
-      resize: none;
-      overflow: hidden;
-      @media (max-width: 700px) {
-        width: 95%;
-        height: 100%;
-      }
-    }
-    button {
-      display: none;
-    }
-  }
-`;
 
 const ToolBar = () => {
   // eslint-disable-next-line
@@ -106,7 +20,7 @@ const ToolBar = () => {
       titleRef.current.value = "";
       textBodyRef.current.value = "";
     }
-  });
+  },[global.status]);
 
   const submitHandler = e => {
     e.preventDefault();
