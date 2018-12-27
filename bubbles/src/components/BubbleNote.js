@@ -17,7 +17,6 @@ const BubbleNote = ({ note }) => {
       setCurrent(note);
     }
     if (global.status==='sent' && note.id === parseInt(global.id)) {
-      console.log(note, global.updatedNote)
       setCurrent(global.updatedNote);
       global.clear()
     }

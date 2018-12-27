@@ -17,7 +17,7 @@ export const Abubble = styled.div`
     margin-left: ${props => props.wiggle || "100px"};
   }
 }
-cursor: ${props => props.bubblePointer ? 'pointer': 'auto'}
+cursor: ${props => props.bubblePointer ? 'pointer': 'auto'};
 z-index: ${props => (props.z ? props.z : "0")};
 animation-delay: ${props => (props.delay ? props.delay : "1ms")};
 border-radius: 50%;

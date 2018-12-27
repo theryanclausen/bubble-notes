@@ -1,6 +1,6 @@
 import React, { useRef, useLayoutEffect, useState, useGlobal } from "reactn";
 import VanillaTilt from "vanilla-tilt";
-import {Abubble} from '../config/styled-containers'
+import { Abubble } from "../config/styled-containers";
 
 const Bubble = ({ bubbleStats, title, textBody, id }) => {
   const [destroyed, setDestroy] = useState(false);
@@ -32,10 +32,10 @@ const Bubble = ({ bubbleStats, title, textBody, id }) => {
         ? e.target.parentNode
         : e.target;
 
-    if (global.status === "delete" && title) {
+    if (global.status === "delete") {
       target.style.backgroundColor = "#ff000080";
     }
-    if (global.status === "edit" && title) {
+    if (global.status === "edit") {
       target.style.backgroundColor = "#66ff6680";
     }
   };
@@ -45,12 +45,12 @@ const Bubble = ({ bubbleStats, title, textBody, id }) => {
       e.target.localName === "h2" || e.target.localName === "p"
         ? e.target.parentNode
         : e.target;
-    if (title && global.status === "delete") {
+    if (global.status === "delete") {
       setDestroy(true);
       target.style.display = "none";
       global.deleteNote(target.id);
     }
-    if (title && global.status === "edit") {
+    if (global.status === "edit") {
       global.editSelect(target.id);
     }
   };
@@ -61,7 +61,7 @@ const Bubble = ({ bubbleStats, title, textBody, id }) => {
       onClick={e => clickHandler(e)}
       {...bubbleStats}
       pendingEdit={global.status === "editSelect" && id === parseInt(global.id)}
-      bubblePointer={(global.status === "delete" || global.status === "edit") && title}
+      bubblePointer={global.status === "delete" || global.status === "edit"}
     >
       <div
         id={id}
