@@ -6,7 +6,7 @@ import Bubbles from "./components/Bubbles";
 const Background = styled.div`
   width: 100vw;
   height: 100vh;
-  background: #3cc2e8;
+  background: radial-gradient(#3cc2e8,#1e4584);
   overflow: hidden;
 `;
 
